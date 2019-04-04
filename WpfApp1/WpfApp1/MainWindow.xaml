@@ -8,7 +8,7 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Button x:Name="Button" Content="Открыть db" HorizontalAlignment="Left" Margin="22,28,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-        <DataGrid x:Name="datgrid" HorizontalAlignment="Left" Height="400" Margin="505,10,0,0" VerticalAlignment="Top" Width="279">
+        <DataGrid x:Name="datgrid" HorizontalAlignment="Left" Height="400" Margin="505,10,0,0" VerticalAlignment="Top" Width="279" SelectionChanged="datgrid_SelectionChanged" IsEnabled="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Number}" ClipboardContentBinding="{x:Null}" Header="Number"/>
                 <DataGridTextColumn Binding="{Binding FIO}" ClipboardContentBinding="{x:Null}" Header="FIO"/>
@@ -16,15 +16,25 @@
                 <DataGridTextColumn Binding="{Binding Math}" ClipboardContentBinding="{x:Null}" Header="Math"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Button Content="Добавить новую" HorizontalAlignment="Left" Margin="172,360,0,0" VerticalAlignment="Top" Width="127" Height="50" Click="Button_Click_1"/>
-        <TextBox Name="FIO" HorizontalAlignment="Left" Height="23" Margin="134,332,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="253" />
-        <TextBox Name="Phy" HorizontalAlignment="Left" Height="23" Margin="393,332,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="52"/>
-        <TextBox Name="Math" HorizontalAlignment="Left" Height="23" Margin="449,332,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="51"/>
-        <TextBox Name="Numb" HorizontalAlignment="Left" Height="23" Margin="6,332,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-        <Label Content="Номер" HorizontalAlignment="Left" Margin="6,301,0,0" VerticalAlignment="Top" Width="123"/>
-        <Label Content="ФИО" HorizontalAlignment="Left" Margin="134,301,0,0" VerticalAlignment="Top" Width="253"/>
-        <Label Content="Физика" HorizontalAlignment="Left" Margin="392,301,0,0" VerticalAlignment="Top" Width="52"/>
-        <Label Content="Матем." HorizontalAlignment="Left" Margin="449,301,0,0" VerticalAlignment="Top" Width="51"/>
-       
+        <Button x:Name="AddBut" Content="Добавить новую" HorizontalAlignment="Left" Margin="200,129,0,0" VerticalAlignment="Top" Width="127" Height="50" Click="Button_Click_1" IsEnabled="False"/>
+        <TextBox Name="FIO" HorizontalAlignment="Left" Height="23" Margin="134,101,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="253" IsEnabled="False" />
+        <TextBox Name="Phy" HorizontalAlignment="Left" Height="23" Margin="393,101,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="52" IsEnabled="False"/>
+        <TextBox Name="Math" HorizontalAlignment="Left" Height="23" Margin="449,101,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="51" IsEnabled="False"/>
+        <TextBox Name="Numb" HorizontalAlignment="Left" Height="23" Margin="6,101,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" IsEnabled="False"/>
+        <Label Content="Номер" HorizontalAlignment="Left" Margin="6,70,0,0" VerticalAlignment="Top" Width="123"/>
+        <Label Content="ФИО" HorizontalAlignment="Left" Margin="134,70,0,0" VerticalAlignment="Top" Width="253"/>
+        <Label Content="Физика" HorizontalAlignment="Left" Margin="392,70,0,0" VerticalAlignment="Top" Width="52"/>
+        <Label Content="Матем." HorizontalAlignment="Left" Margin="449,70,0,0" VerticalAlignment="Top" Width="51"/>
+        <Button x:Name="Del" Content="Del" HorizontalAlignment="Left" Margin="224,280,0,0" VerticalAlignment="Top" Width="75" Click="Del_Click" IsEnabled="False"/>
+        <TextBox x:Name="FIO_Copy" HorizontalAlignment="Left" Height="23" Margin="134,336,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="253" IsEnabled="False" />
+        <TextBox x:Name="Phy_Copy" HorizontalAlignment="Left" Height="23" Margin="393,336,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="52" IsEnabled="False"/>
+        <TextBox x:Name="Math_Copy" HorizontalAlignment="Left" Height="23" Margin="449,336,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="51" IsEnabled="False"/>
+        <TextBox x:Name="Numb_Copy" HorizontalAlignment="Left" Height="23" Margin="6,336,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" IsEnabled="False"/>
+        <Label Content="Номер" HorizontalAlignment="Left" Margin="6,305,0,0" VerticalAlignment="Top" Width="123"/>
+        <Label Content="ФИО" HorizontalAlignment="Left" Margin="134,305,0,0" VerticalAlignment="Top" Width="253"/>
+        <Label Content="Физика" HorizontalAlignment="Left" Margin="392,305,0,0" VerticalAlignment="Top" Width="52"/>
+        <Label Content="Матем." HorizontalAlignment="Left" Margin="449,305,0,0" VerticalAlignment="Top" Width="51"/>
+        <Button x:Name="upd" Content="UPDATE " HorizontalAlignment="Left" Margin="224,372,0,0" VerticalAlignment="Top" Width="75" Click="upd_Click" IsEnabled="False"/>
+
     </Grid>
 </Window>

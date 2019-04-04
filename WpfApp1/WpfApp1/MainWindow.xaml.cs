@@ -55,6 +55,13 @@ namespace Data_base
                 var data = new CTest { Number = int.Parse(reader["Number"].ToString()), FIO = reader["FIO"].ToString(), Phy = int.Parse(reader["Phy"].ToString()), Math = int.Parse(reader["Math"].ToString()) };
                 datgrid.Items.Add(data);
             }
+            AddBut.IsEnabled = true;
+            Numb.IsEnabled = true;
+            FIO.IsEnabled = true;
+            Math.IsEnabled = true;
+            Phy.IsEnabled = true;
+            datgrid.IsEnabled = true;
+
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -62,9 +69,44 @@ namespace Data_base
 
             string sql = "INSERT INTO Tabl (Number,FIO,Phy,Math) VALUES (" + Numb.Text.ToString() + "," + FIO.Text.ToString() + "," + Phy.Text.ToString() + "," + Math.Text.ToString() + ")";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            var data = new CTest { Number = int.Parse(Numb.Text.ToString()), FIO = FIO.Text.ToString(), Phy = int.Parse(Phy.Text.ToString()), Math = int.Parse(Math.Text.ToString()) };
+            datgrid.Items.Add(data);
             command.ExecuteNonQuery();
+            Numb.Text = "";
+            FIO.Text = "";
+            Phy.Text = "";
+            Math.Text = "";
+            //string sql = "SELECT Number FROM Table ORDER BY int_field DESC LIMIT 1";
+
 
         }
+
+        private void datgrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Del.IsEnabled = true;
+            Numb_Copy.IsEnabled = true;
+            FIO_Copy.IsEnabled = true;
+            Math_Copy.IsEnabled = true;
+            Phy_Copy.IsEnabled = true;
+            upd.IsEnabled = true;
+
         }
+
+        private void Del_Click(object sender, RoutedEventArgs e)
+        {
+            CTest DabGr = (CTest)datgrid.SelectedItem;
+            string sql = ("DELETE FROM Tabl WHERE(Number=" + DabGr.Number.ToString() + " AND FIO = '" + DabGr.FIO.ToString() + "'" + " AND Phy = " + DabGr.Phy.ToString() + " And Math = " + DabGr.Math.ToString() + ")");
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            command.ExecuteNonQuery();
+            datgrid.Items.RemoveAt(int.Parse (datgrid.SelectedIndex.ToString()));
+        }
+
+        private void upd_Click(object sender, RoutedEventArgs e)
+        {
+            CTest DabGr = (CTest)datgrid.SelectedItem;
+            string sql =("UPDATE Tabl SET Number=" + int.Parse(Numb_Copy.Text.ToString()) + " WHERE Number=" + DabGr.Number.ToString());            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            command.ExecuteNonQuery();
+        }
+    }
     }
 
