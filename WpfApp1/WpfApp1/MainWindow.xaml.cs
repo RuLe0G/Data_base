@@ -104,8 +104,15 @@ namespace Data_base
         private void upd_Click(object sender, RoutedEventArgs e)
         {
             CTest DabGr = (CTest)datgrid.SelectedItem;
-            string sql =("UPDATE Tabl SET Number=" + int.Parse(Numb_Copy.Text.ToString()) + " WHERE Number=" + DabGr.Number.ToString());            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-            command.ExecuteNonQuery();
+            string sql =("UPDATE Tabl SET Number=" + int.Parse(Numb_Copy.Text.ToString()) + " WHERE Number=" + DabGr.Number.ToString());
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            string sql1 = ("UPDATE Tabl SET FIO=" + FIO_Copy.Text.ToString() + " WHERE FIO=" + DabGr.FIO.ToString());
+            SQLiteCommand command1 = new SQLiteCommand(sql1, m_dbConnection);
+            string sql2 = ("UPDATE Tabl SET Phy=" + int.Parse(Phy_Copy.Text.ToString()) + " WHERE Phy=" + DabGr.Phy.ToString());
+            SQLiteCommand command2 = new SQLiteCommand(sql2, m_dbConnection);
+            string sql3 = ("UPDATE Tabl SET Math=" + int.Parse(Math_Copy.Text.ToString()) + " WHERE Math=" + DabGr.Math.ToString());
+            SQLiteCommand command3 = new SQLiteCommand(sql3, m_dbConnection);
+            command.ExecuteNonQuery(); command1.ExecuteNonQuery(); command2.ExecuteNonQuery(); command3.ExecuteNonQuery();
         }
     }
     }
