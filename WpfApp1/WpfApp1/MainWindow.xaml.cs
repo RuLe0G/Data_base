@@ -83,13 +83,19 @@ namespace Data_base
 
         private void datgrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Del.IsEnabled = true;
-            Numb_Copy.IsEnabled = true;
-            FIO_Copy.IsEnabled = true;
-            Math_Copy.IsEnabled = true;
-            Phy_Copy.IsEnabled = true;
-            upd.IsEnabled = true;
+            if (datgrid.SelectedIndex > -1)
+            {
+                CTest DaT = (CTest)datgrid.SelectedItem;
 
+                Math_Copy.Text = DaT.Math.ToString(); Phy_Copy.Text = DaT.Phy.ToString(); FIO_Copy.Text = DaT.FIO.ToString(); Numb_Copy.Text = DaT.Number.ToString();
+
+                Del.IsEnabled = true;
+                Numb_Copy.IsEnabled = true;
+                FIO_Copy.IsEnabled = true;
+                Math_Copy.IsEnabled = true;
+                Phy_Copy.IsEnabled = true;
+                upd.IsEnabled = true;
+            }
         }
 
         private void Del_Click(object sender, RoutedEventArgs e)
@@ -99,21 +105,34 @@ namespace Data_base
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
             datgrid.Items.RemoveAt(int.Parse (datgrid.SelectedIndex.ToString()));
+            Del.IsEnabled = false;
+            Numb_Copy.IsEnabled = false;
+            FIO_Copy.IsEnabled = false;
+            Math_Copy.IsEnabled = false;
+            Phy_Copy.IsEnabled = false;
+            upd.IsEnabled = false;
         }
 
         private void upd_Click(object sender, RoutedEventArgs e)
         {
+            int index = int.Parse(datgrid.SelectedIndex.ToString());
             CTest DabGr = (CTest)datgrid.SelectedItem;
-            string sql =("UPDATE Tabl SET Number=" + int.Parse(Numb_Copy.Text.ToString()) + " WHERE Number=" + DabGr.Number.ToString());
+            var data = new CTest { Number = int.Parse(Numb_Copy.Text.ToString()), FIO = FIO_Copy.Text.ToString(), Phy = int.Parse(Phy_Copy.Text.ToString()), Math = int.Parse(Math_Copy.Text.ToString()) };
+
+            string sql = ("UPDATE Tabl SET Number=" + int.Parse(Numb_Copy.Text.ToString()) + ", FIO=" + FIO_Copy.Text.ToString() + ", Phy=" + int.Parse(Phy_Copy.Text.ToString()) + ", Math=" + int.Parse(Math_Copy.Text.ToString()) + " WHERE Number = " + DabGr.Number.ToString() );
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-            string sql1 = ("UPDATE Tabl SET FIO=" + FIO_Copy.Text.ToString() + " WHERE FIO=" + DabGr.FIO.ToString());
-            SQLiteCommand command1 = new SQLiteCommand(sql1, m_dbConnection);
-            string sql2 = ("UPDATE Tabl SET Phy=" + int.Parse(Phy_Copy.Text.ToString()) + " WHERE Phy=" + DabGr.Phy.ToString());
-            SQLiteCommand command2 = new SQLiteCommand(sql2, m_dbConnection);
-            string sql3 = ("UPDATE Tabl SET Math=" + int.Parse(Math_Copy.Text.ToString()) + " WHERE Math=" + DabGr.Math.ToString());
-            SQLiteCommand command3 = new SQLiteCommand(sql3, m_dbConnection);
-            command.ExecuteNonQuery(); command1.ExecuteNonQuery(); command2.ExecuteNonQuery(); command3.ExecuteNonQuery();
+            command.ExecuteNonQuery();
+            datgrid.Items.RemoveAt(index);
+            datgrid.Items.Insert(index, data);
+
+            Math_Copy.Text = "";  Phy_Copy.Text = ""; FIO_Copy.Text = ""; Numb_Copy.Text = "";
+            Del.IsEnabled = false;
+            Numb_Copy.IsEnabled = false;
+            FIO_Copy.IsEnabled = false;
+            Math_Copy.IsEnabled = false;
+            Phy_Copy.IsEnabled = false;
+            upd.IsEnabled = false;
         }
     }
-    }
+}
 
