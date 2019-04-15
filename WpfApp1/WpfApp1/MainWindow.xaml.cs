@@ -32,7 +32,6 @@ namespace Data_base
             InitializeComponent();
         }
 
-        string db_name;
         SQLiteConnection m_dbConnection;
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -66,19 +65,23 @@ namespace Data_base
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-
-            string sql = "INSERT INTO Tabl (Number,FIO,Phy,Math) VALUES (" + Numb.Text.ToString() + "," + FIO.Text.ToString() + "," + Phy.Text.ToString() + "," + Math.Text.ToString() + ")";
-            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-            var data = new CTest { Number = int.Parse(Numb.Text.ToString()), FIO = FIO.Text.ToString(), Phy = int.Parse(Phy.Text.ToString()), Math = int.Parse(Math.Text.ToString()) };
-            datgrid.Items.Add(data);
-            command.ExecuteNonQuery();
-            Numb.Text = "";
-            FIO.Text = "";
-            Phy.Text = "";
-            Math.Text = "";
-            //string sql = "SELECT Number FROM Table ORDER BY int_field DESC LIMIT 1";
-
-
+            try
+            {
+                string sql = "INSERT INTO Tabl (Number,FIO,Phy,Math) VALUES (" + Numb.Text.ToString() + ",'" + FIO.Text.ToString() + "'," + Phy.Text.ToString() + "," + Math.Text.ToString() + ")";
+                SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                var data = new CTest { Number = int.Parse(Numb.Text.ToString()), FIO = FIO.Text.ToString(), Phy = int.Parse(Phy.Text.ToString()), Math = int.Parse(Math.Text.ToString()) };
+                datgrid.Items.Add(data);
+                command.ExecuteNonQuery();
+                Numb.Text = "";
+                FIO.Text = "";
+                Phy.Text = "";
+                Math.Text = "";
+                //string sql = "SELECT Number FROM Table ORDER BY int_field DESC LIMIT 1";
+            }
+            catch
+            {
+                Err.Content = "ОШИБКА: Такой номер (" + Numb.Text.ToString() + ") уже существует";
+            }
         }
 
         private void datgrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -86,7 +89,7 @@ namespace Data_base
             if (datgrid.SelectedIndex > -1)
             {
                 CTest DaT = (CTest)datgrid.SelectedItem;
-
+                Err.Content = "";
                 Math_Copy.Text = DaT.Math.ToString(); Phy_Copy.Text = DaT.Phy.ToString(); FIO_Copy.Text = DaT.FIO.ToString(); Numb_Copy.Text = DaT.Number.ToString();
 
                 Del.IsEnabled = true;
@@ -115,16 +118,23 @@ namespace Data_base
 
         private void upd_Click(object sender, RoutedEventArgs e)
         {
-            int index = int.Parse(datgrid.SelectedIndex.ToString());
-            CTest DabGr = (CTest)datgrid.SelectedItem;
-            var data = new CTest { Number = int.Parse(Numb_Copy.Text.ToString()), FIO = FIO_Copy.Text.ToString(), Phy = int.Parse(Phy_Copy.Text.ToString()), Math = int.Parse(Math_Copy.Text.ToString()) };
-
-            string sql = ("UPDATE Tabl SET Number=" + int.Parse(Numb_Copy.Text.ToString()) + ", FIO=" + FIO_Copy.Text.ToString() + ", Phy=" + int.Parse(Phy_Copy.Text.ToString()) + ", Math=" + int.Parse(Math_Copy.Text.ToString()) + " WHERE Number = " + DabGr.Number.ToString() );
-            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-            command.ExecuteNonQuery();
-            datgrid.Items.RemoveAt(index);
-            datgrid.Items.Insert(index, data);
-
+            
+            try
+            {
+                int index = int.Parse(datgrid.SelectedIndex.ToString());
+                CTest DabGr = (CTest)datgrid.SelectedItem;
+                var data = new CTest { Number = int.Parse(Numb_Copy.Text.ToString()), FIO = FIO_Copy.Text.ToString(), Phy = int.Parse(Phy_Copy.Text.ToString()), Math = int.Parse(Math_Copy.Text.ToString()) };
+                string sql = ("UPDATE Tabl SET Number=" + int.Parse(Numb_Copy.Text.ToString()) + ", FIO= '" + FIO_Copy.Text.ToString() + "', Phy=" + int.Parse(Phy_Copy.Text.ToString()) + ", Math=" + int.Parse(Math_Copy.Text.ToString()) + " WHERE Number = " + DabGr.Number.ToString());
+                SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                command.ExecuteNonQuery();
+                datgrid.Items.RemoveAt(index);
+                datgrid.Items.Insert(index, data);
+            }
+            catch 
+            {
+                Err.Content = "ОШИБКА: Такой номер (" + Numb_Copy.Text.ToString() + ") уже существует";
+                datgrid.SelectedIndex = -1;
+            }
             Math_Copy.Text = "";  Phy_Copy.Text = ""; FIO_Copy.Text = ""; Numb_Copy.Text = "";
             Del.IsEnabled = false;
             Numb_Copy.IsEnabled = false;
